@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <el-autocomplete
+  <div class="duty" @click="handleClick">
+    <!-- <el-autocomplete
       class="search__box"
       placeholder="不知道找谁？搜一搜试试。"
       prefix-icon="el-icon-search"
@@ -10,8 +10,10 @@
       :trigger-on-focus="false"
       select-when-unmatched
       @select="handleSelect"
-    ></el-autocomplete>
-    <duty-item v-for="(employee) in matchedEmployees" :key="employee.name" v-bind="employee"></duty-item>
+    ></el-autocomplete>-->
+    <div v-show="step > 1" class="duty__wrapper">
+      <duty-item v-for="(employee) in matchedEmployees" :key="employee.name" v-bind="employee"></duty-item>
+    </div>
   </div>
 </template>
 
@@ -36,19 +38,19 @@ export default Vue.extend({
       selectedDuty: '',
       employees: [
         {
-          name: '姚笑颜',
-          avatar: require('./images/yaoxiaoyan.jpg'),
-          duty: [
-            '产品订单（除了对毛）',
-            '现有产品的信息',
-            '各种定制材料'
-          ]
-        },
-        {
           name: '程帅',
           avatar: require('./images/chengshuai.jpg'),
           duty: [
             '各种设计问题'
+          ]
+        },
+        {
+          name: '姚笑颜',
+          avatar: require('./images/yaoxiaoyan.jpg'),
+          duty: [
+            '产品订单︵ 对毛除外 ︶',
+            '现有产品的信息',
+            '各种定制材料'
           ]
         },
         {
@@ -77,8 +79,7 @@ export default Vue.extend({
             '特殊定制',
             '客户反馈',
             '产品信息',
-            '新品',
-            '...'
+            '新品'
           ]
         }
       ]
@@ -114,8 +115,19 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.search__box {
-  width: 100%;
-  margin-bottom: 20px;
+.duty {
+  padding: 20px 0;
+  height: 400px;
+  overflow: hidden;
+  color: #ffffff;
+
+  .search__box {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .duty__wrapper {
+    display: flex;
+    justify-content: space-around;
+  }
 }
 </style>
