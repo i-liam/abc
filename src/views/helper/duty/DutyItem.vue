@@ -1,8 +1,14 @@
 <template>
   <div class="duty-item">
-    <div class="avatar animate__animated" :class="{'animate__swing': showDuty}">
+    <div
+      ref="avatar"
+      class="avatar animate__animated"
+      @click="handleAvatarClick"
+      :class="{'animate__swing': showDuty}"
+    >
       <p class="avatar__name">{{name}}</p>
-      <img @click="handleAvatarClick" class="avatar__img" :src="avatar" :alt="name" />
+      <img class="guajian" src="./images/star.png" />
+      <img class="avatar__img" :src="avatar" :alt="name" />
     </div>
     <div
       class="employee-duty animate__animated"
@@ -11,6 +17,7 @@
     >
       <p v-for="item in duty" :key="item">{{item}}</p>
     </div>
+    <div v-if="showAnouther" class="another-duty animate__animated animate__bounceIn">专治各种疑难杂症</div>
   </div>
 </template>
 
@@ -26,12 +33,23 @@ export default Vue.extend({
   },
   data () {
     return {
-      showDuty: false
+      showDuty: false,
+      showAnouther: false
     }
   },
   methods: {
     handleAvatarClick () {
-      if (this.showDuty) return
+      const avatar = (this.$refs.avatar as HTMLElement)
+      avatar.classList.remove('animate__swing')
+      setTimeout(() => {
+        avatar.classList.add('animate__swing')
+      }, 10)
+      if (this.showDuty) {
+        if (this.name === '刘娜') {
+          this.showAnouther = true
+        }
+        return
+      }
       this.showDuty = true
     }
   }
@@ -39,7 +57,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-$avatar-size: 80px !default;
+$avatar-size: 100px !default;
 
 .duty-item {
   width: 100%;
@@ -51,27 +69,44 @@ $avatar-size: 80px !default;
   margin-bottom: 20px;
 
   .avatar {
-    margin: 0 0.4rem;
+    margin: 0 0.4em 0.4em;
+    position: relative;
+    cursor: pointer;
+
+    &:hover {
+      .guajian {
+        animation: rotate 4s linear infinite both;
+      }
+      .avatar__img {
+        animation: breathe 2.6s linear infinite both;
+      }
+    }
+
+    .guajian {
+      width: $avatar-size + 2px;
+      height: $avatar-size + 2px;
+      position: absolute;
+      left: 0;
+      top: 30px;
+    }
+
     .avatar__img {
       width: $avatar-size;
       height: $avatar-size;
       border-radius: 50%;
       border: 1px solid #3ab5d2;
-      cursor: pointer;
-      &:hover {
-        box-shadow: 0 0 10px 0 #3ab5d2;
-        transition: all 200ms ease-in-out;
-      }
     }
 
     .avatar__name {
-      width: $avatar-size;
+      height: 30px;
+      line-height: 30px;
       text-align: center;
       font-size: 20px;
-      margin: 0 0 0.6em;
+      margin: 0;
       color: #ffffff;
     }
   }
+
   .employee-duty {
     display: flex;
     justify-content: space-around;
@@ -83,6 +118,10 @@ $avatar-size: 80px !default;
       margin: 0;
       padding: 0 0.4em;
     }
+  }
+
+  .another-duty {
+    margin-top: 1rem;
   }
 }
 </style>

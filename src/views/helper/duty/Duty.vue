@@ -1,5 +1,6 @@
 <template>
-  <div class="duty" @click="handleClick">
+  <div class="duty" @click="playMusic">
+    <audio ref="music" loop="loop" src="./media/music.mp3" autoplay="autoplay"></audio>
     <!-- <el-autocomplete
       class="search__box"
       placeholder="不知道找谁？搜一搜试试。"
@@ -11,7 +12,7 @@
       select-when-unmatched
       @select="handleSelect"
     ></el-autocomplete>-->
-    <div v-show="step > 1" class="duty__wrapper">
+    <div class="duty__wrapper">
       <duty-item v-for="(employee) in matchedEmployees" :key="employee.name" v-bind="employee"></duty-item>
     </div>
   </div>
@@ -63,7 +64,7 @@ export default Vue.extend({
           ]
         },
         {
-          name: '孙亚林',
+          name: '孙亚琳',
           avatar: require('./images/sunyalin.jpg'),
           duty: [
             '装箱',
@@ -102,7 +103,13 @@ export default Vue.extend({
       })
     }
   },
+  mounted () {
+    require('@/assets/scripts/canvas/willow.js')
+  },
   methods: {
+    playMusic () {
+      (this.$refs.music as HTMLMediaElement).play()
+    },
     querySearch (queryString: string, cb: (data: SearchOption[]) => void) {
       const _result: SearchOption[] = this.dutyList.filter(item => item.value.toLowerCase().indexOf(queryString) !== -1)
       cb(_result)
@@ -116,10 +123,14 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .duty {
+  width: 990px;
+  position: relative;
+  margin: 0 auto;
   padding: 20px 0;
   height: 400px;
   overflow: hidden;
   color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.4);
 
   .search__box {
     width: 100%;
